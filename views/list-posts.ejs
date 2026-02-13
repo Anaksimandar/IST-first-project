@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Oglasi</title>
+</head>
+
+<body>
+    <h1>All Oglasi</h1>
+    <ul>
+        <% oglasi.forEach(oglas=> { %>
+            <li>
+                <strong>
+                    <%= oglas.kategorija_oglasa %>
+                </strong>:
+                <%= oglas.tekst_oglasa %> -
+                <%= oglas.cena %>
+                <%= oglas.valuta %> (Expires: <%= oglas.datum_isteka %>)
+                <div class="button-container">
+                    <button>Edit</button>
+                    <button onclick="deletePost(<%= oglas.id %>)">Delete</button>
+                </div>
+            </li>
+        <% }) %>
+    </ul>
+
+    <script>
+        const deletePost = (postId)=>{
+            console.log(postId);
+            
+            fetch(`/post/${postId}`, {
+                method: "DELETE"
+            })
+            .then(res=>{
+                alert("Post deleted")
+                window.location.reload();
+            })
+            .catch(err=>{
+                alert(`Error: ${err}`)
+            })
+        }
+    </script>
+</body>
+
+</html>

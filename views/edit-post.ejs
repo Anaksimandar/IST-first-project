@@ -1,0 +1,25 @@
+<h2>Edit Post</h2>
+
+<form action="/post/edit/<%= post.id %>" method="POST">
+
+    <input type="text" name="kategorija_oglasa" value="<%= post.kategorija_oglasa %>" />
+
+    <input type="text" name="tekst_oglasa" value="<%= post.tekst_oglasa %>" />
+
+    <input type="number" name="cena" value="<%= post.cena %>" />
+
+    <input type="text" name="valuta" value="<%= post.valuta %>" />
+
+    <input type="date" name="datum_isteka" value="<%= post.datum_isteka %>" />
+
+    <input type="text" name="tags" value="<%= post.tags ? post.tags.join(', ') : '' %>"
+        placeholder="gitara, fender, muzika" />
+
+    <input type="text" name="privatni_email"
+        value="<%= post.emails?.find(e => e.tip === 'privatni')?.email || '' %>">
+
+    <input type="text" name="poslovni_email"
+        value="<%= post.emails?.find(e => e.tip === 'poslovni')?.email || '' %>">
+
+    <button type="submit">Update</button>
+</form>

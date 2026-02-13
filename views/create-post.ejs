@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Create Oglas</title>
+</head>
+
+<body>
+    <h1>Create New Oglas</h1>
+    <form action="/new-post" method="POST">
+        <label>Kategorija:</label>
+        <input type="text" name="kategorija_oglasa" required /><br />
+
+        <label>Tekst Oglasa:</label>
+        <textarea name="tekst_oglasa" required></textarea><br />
+
+        <label>Cena:</label>
+        <input type="number" name="cena" step="0.01" required /><br />
+
+        <label>Valuta:</label>
+        <select name="valuta">
+            <option value="rsd">RSD</option>
+            <option value="eur">EUR</option>
+            <option value="rub">RUB</option>
+        </select><br />
+
+        <label>Datum Isteka:</label>
+        <input type="date" name="datum_isteka" required /><br />
+
+        <label>Tags (comma separated):</label>
+        <input type="text" name="tags" placeholder="gitara,fender" /><br />
+
+        <label>Privatni email:</label>
+        <input type="email" name="privatni_email" /><br />
+
+        <label>Poslovni email:</label>
+        <input type="email" name="poslovni_email" /><br />
+
+        <button type="submit">Create</button>
+    </form>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+# Node modules (always ignore)
+node_modules/
+
+# Environment variables (Supabase keys, etc.)
+.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Optional: build folders if you ever compile assets
+dist/
+build/
+
+# Optional: editor-specific files
+.vscode/
+.idea/
