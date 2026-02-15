@@ -8,7 +8,8 @@
 <body>
     <h1>All Oglasi</h1>
     <ul>
-        <% oglasi.forEach(oglas=> { %>
+        <% if (oglasi && oglasi.length> 0) { %>
+            <% oglasi.forEach(oglas=> { %>
             <li>
                 <strong>
                     <%= oglas.kategorija_oglasa %>
@@ -17,28 +18,22 @@
                 <%= oglas.cena %>
                 <%= oglas.valuta %> (Expires: <%= oglas.datum_isteka %>)
                 <div class="button-container">
-                    <button>Edit</button>
-                    <button onclick="deletePost(<%= oglas.id %>)">Delete</button>
+                    <button onclick="openEditPage('<%= oglas.id %>')">Edit</button>
+                    <button onclick="deletePost('<%= oglas.id %>')">Delete</button>
                 </div>
             </li>
         <% }) %>
+        <% } else { %>
+            <p>No posts found.</p>
+            <% } %>
+       
     </ul>
 
     <script>
-        const deletePost = (postId)=>{
-            console.log(postId);
-            
-            fetch(`/post/${postId}`, {
-                method: "DELETE"
-            })
-            .then(res=>{
-                alert("Post deleted")
-                window.location.reload();
-            })
-            .catch(err=>{
-                alert(`Error: ${err}`)
-            })
-        }
+
+    const openEditPage = (postId)=>{        
+        window.location.href = `/post/edit/${postId}`;
+    }
     </script>
 </body>
 

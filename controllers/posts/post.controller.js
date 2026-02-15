@@ -1,19 +1,29 @@
 import supabase from '../../db/supabase.js';
 
 
-const getPosts = async (req, res) =>{
+const getPosts = async (req, res) => {
     try {
-        const { data: oglasi } = await supabase
+        const response = await supabase
             .from('oglasi')
-            .select(`*`)
+            .select('*');
+
+        console.log("FULL RESPONSE:", response);
+
+        const { data: oglasi, error } = response;
+
+        if (error) {
+            console.log("SUPABASE ERROR:", error);
+            return res.status(500).send(error.message);
+        }
 
         res.render('list-posts', { oglasi });
-    }
-    catch (err) {
-        console.error(err);
+
+    } catch (err) {
+        console.error("CATCH ERROR:", err);
         res.status(500).send('Failed to fetch oglasi');
     }
 }
+
 
 const getPostById = async (req, res) =>{
     const { id } = req.params;
@@ -58,7 +68,11 @@ const deletePost = async (req, res) =>{
 
 const createPost = async (req, res) =>{
     const { kategorija_oglasa, tekst_oglasa, cena, valuta, datum_isteka, tags, privatni_email, poslovni_email } = req.body
-    let formatedTags = tags.split(',').filter(tag => tag != '').map(tag => tag.trim());
+    let formatedTags;
+
+    if (tags) {
+        formatedTags = tags.split(',').filter(tag => tag != '').map(tag => tag.trim());
+    }
 
     const { data, error } = await supabase
         .from('oglasi')
@@ -68,7 +82,7 @@ const createPost = async (req, res) =>{
             cena: cena,
             valuta: valuta,
             datum_isteka: datum_isteka,
-            tags: formatedTags,
+            tags: tags,
             emails: [
                 { tip: 'privatni', email: privatni_email },
                 { tip: 'poslovni', email: poslovni_email }
@@ -95,7 +109,9 @@ const updatePost = async (req, res) =>{
         poslovni_email
     } = req.body;
 
-    let formatedTags = tags.split(',').filter(tag => tag != '').map(tag => tag.trim());
+    if(tags){
+        formatedTags = tags.split(',').filter(tag => tag != '').map(tag => tag.trim());
+    }
 
     const updatedData = {
         kategorija_oglasa,

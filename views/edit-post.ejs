@@ -1,25 +1,73 @@
 <h2>Edit Post</h2>
 
-<form action="/post/edit/<%= post.id %>" method="POST">
+    <input type="text" id="kategorija_oglasa" name="kategorija_oglasa" value="<%= post.kategorija_oglasa %>" />
 
-    <input type="text" name="kategorija_oglasa" value="<%= post.kategorija_oglasa %>" />
+    <input type="text"id="tekst_oglasa" name="tekst_oglasa" value="<%= post.tekst_oglasa %>" />
 
-    <input type="text" name="tekst_oglasa" value="<%= post.tekst_oglasa %>" />
+    <input type="number" id="cena" name="cena" value="<%= post.cena %>" />
 
-    <input type="number" name="cena" value="<%= post.cena %>" />
+    <input type="text" id="valuta" name="valuta" value="<%= post.valuta %>" />
 
-    <input type="text" name="valuta" value="<%= post.valuta %>" />
+    <input type="date" id="datum_isteka" name="datum_isteka" value="<%= post.datum_isteka %>" />
 
-    <input type="date" name="datum_isteka" value="<%= post.datum_isteka %>" />
-
-    <input type="text" name="tags" value="<%= post.tags ? post.tags.join(', ') : '' %>"
+    <input type="text" id="tags" name="tags" value="<%= post.tags ? post.tags.join(', ') : '' %>"
         placeholder="gitara, fender, muzika" />
 
-    <input type="text" name="privatni_email"
+    <input type="text" id="privatni_email" name="privatni_email"
         value="<%= post.emails?.find(e => e.tip === 'privatni')?.email || '' %>">
 
-    <input type="text" name="poslovni_email"
+    <input type="text" id="poslovni_email" name="poslovni_email"
         value="<%= post.emails?.find(e => e.tip === 'poslovni')?.email || '' %>">
 
-    <button type="submit">Update</button>
-</form>
+    <button onclick="editPost('<%= post.id %>')">Update</button>
+
+
+<body>
+    <script>
+        const editPost = async (postId) => {
+            console.log(postId);
+            
+            // Grab current values from inputs
+            const kategorija_oglasa = document.getElementById('kategorija_oglasa').value;
+            const tekst_oglasa = document.getElementById('tekst_oglasa').value;
+            const cena = parseFloat(document.getElementById('cena').value);
+            const valuta = document.getElementById('valuta').value;
+            const datum_isteka = document.getElementById('datum_isteka').value;
+            const tags = document.getElementById('tags').value.split(',').map(t => t.trim()).filter(t => t);
+            const privatni_email = document.getElementById('privatni_email').value;
+            const poslovni_email = document.getElementById('poslovni_email').value;
+
+            // Construct the object to send
+            const post = {
+                kategorija_oglasa,
+                tekst_oglasa,
+                cena,
+                valuta,
+                datum_isteka,
+                tags,
+                emails: [
+                    { tip: 'privatni', email: privatni_email },
+                    { tip: 'poslovni', email: poslovni_email }
+                ]
+            };
+
+            try {
+                const response =  await fetch(`/post/edit/${postId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(post)
+                });
+
+                const result = response.json();
+                alert('Post updated successfully!');
+                console.log(result);
+
+            } catch (err) {
+                alert('Error: ' + err.message);
+            }
+        }
+    </script>
+
+</body>
