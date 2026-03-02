@@ -62,7 +62,7 @@
 
                 const result = response.json();
                 alert('Post updated successfully!');
-                console.log(result);
+                window.location.href = '/post';
 
             } catch (err) {
                 alert('Error: ' + err.message);

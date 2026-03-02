@@ -5,7 +5,8 @@ const getPosts = async (req, res) => {
     try {
         const response = await supabase
             .from('oglasi')
-            .select('*');
+            .select('*')
+            .order("id");
 
         console.log("FULL RESPONSE:", response);
 
@@ -109,17 +110,13 @@ const updatePost = async (req, res) =>{
         poslovni_email
     } = req.body;
 
-    if(tags){
-        formatedTags = tags.split(',').filter(tag => tag != '').map(tag => tag.trim());
-    }
-
     const updatedData = {
         kategorija_oglasa,
         tekst_oglasa,
         cena: parseInt(cena),
         valuta,
         datum_isteka,
-        tags: formatedTags,
+        tags: tags,
         emails: [
             { tip: 'privatni', email: privatni_email },
             { tip: 'poslovni', email: poslovni_email }
